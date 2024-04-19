@@ -63,6 +63,16 @@ options:
               the playbook command.
         required: True
         type: str
+    software_instance_uuid:
+        description:
+            - >
+              A UUID of a software instance. A UUID is assigned to every software instance and 
+              can be obtained using the "List the software instances defined to z/OSMF" REST API. 
+            - >
+              This variable can be specified in the inventory file or as an argument on
+              the playbook command.
+        required: True
+        type: str
     search_software_updates_response_file:
         description:
             - The path to the file that will contain the results from the search software updates operation.
