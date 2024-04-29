@@ -52,7 +52,12 @@ options:
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
-        required: True
+            - >
+              A software instance name must be specified when a software instance UUID
+              or a CSI data set name are not specified. If a software instance UUID is
+              specified in addition to a software instance & system nickname, then the
+              software instance UUID is used by default.
+        required: False
         type: str
     system_nickname:
         description:
@@ -62,7 +67,12 @@ options:
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
-        required: True
+            - >
+              A system nickname name must be specified when a software instance UUID
+              or a CSI data set name are not specified. If a software instance UUID is
+              specified in addition to a software instance & system nickname, then the
+              software instance UUID is used by default.
+        required: False
         type: str
     software_instance_uuid:
         description:
@@ -72,7 +82,26 @@ options:
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
-        required: True
+            - >
+              A software instance UUID name must be specified when a software instance
+              or a CSI data set name are not specified. If a software instance or a CSI data
+              set name are specified, then the software instance UUID is used by default.
+        required: False
+        type: str
+    csi_data_set_name:
+        description:
+            - >
+              A global zone CSI data set to query when it is not associated with a defined
+              software instance object.
+            - >
+              This variable can be specified in the inventory file or as an argument on
+              the playbook command.
+            - >
+              A CSI data set name must be specified when a software instance
+              or a software instance UUID are not specified. If a software instance UUID is
+              specified in addition to a CSI data set name, then the software instance UUID
+              is used by default.
+        required: False
         type: str
     zones:
         description:
@@ -90,6 +119,9 @@ options:
             - >
               Zone names are accepted in mixed case and are folded to uppercase automatically. This
               list variable needs to be in following format: C('"GLOBAL","ALLTZONES","ALLDZONES"')
+            - >
+              This variable can be specified in the inventory file or as an argument on
+              the playbook command.
         required: True
         type: arr
     entries:
@@ -98,6 +130,12 @@ options:
               The list of entry types to be queried. You may provide one or more entry types,
               or asterisk (“*”) can be used to indicate all entry types will be queried. Entry types
               are accepted in mixed case and are folded to uppercase automatically.
+            - >
+              Refer to https://www.ibm.com/docs/en/zos/3.1.0?topic=command-valid-entry-types
+              for the list of valid types.
+            - >
+              This variable can be specified in the inventory file or as an argument on
+              the playbook command.
         required: True
         type: arr
     subentries:
@@ -108,6 +146,12 @@ options:
               Subentry types are accepted in mixed case and are folded to uppercase automatically.
               If no subentries are provided, then only the entry name and zone will be returned for
               matching entries.
+            - >
+              Refer to https://www.ibm.com/docs/en/zos/3.1.0?topic=command-valid-subentry-types
+              for the list of valid types.
+            - >
+              This variable can be specified in the inventory file or as an argument on
+              the playbook command.
         required: False
         type: arr
     filter:
@@ -119,6 +163,9 @@ options:
               automatically. The value of a filter condition is case sensitive and is not folded to uppercase.
               If a filter is not provided then all entries of the specified type in the specified zones will
               be returned.
+            - >
+              Refer to https://www.ibm.com/docs/en/zos/3.1.0?topic=command-filter-parameter-syntax
+              for a detailed description of the syntax for the filter.
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
@@ -165,6 +212,12 @@ notes:
       I(inventory.yml) that contains the values for the variables described above,
       such as z/OSMF host server, userid, password, software instance name and system,
       and response file name.
+    - >
+      Command syntax to call a playbook using an inventory file:
+        ansible-playbook -i inventory software_management_csi_query_CICDtest1.yml
+      Command syntax to call a playbook using command arguments:
+        ansible-playbook software_management_csi_query_CICDtest1.yml -e zmf_user=zosmf**
+        -e zmf_password=zosmf**
     - >
       When the role is executed, a message shown in following example is
       displayed, C("msg": "Output filename= /tmp/xxx/csi_query_response.json").
