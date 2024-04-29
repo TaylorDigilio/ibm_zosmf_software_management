@@ -4,6 +4,14 @@
 ---
 # Tasks file for zmf_swmgmt_search_software_updates play.
 
+# Do not attempt to execute the play without a software instance or UUID.
+- name: A software instance & system nickname or a UUID must be provided to the role
+  ansible.builtin.fail:
+    msg: "Specify a software instance & system nickname or a UUID and retry the role."
+  when: >
+    software_instance_uuid is not defined or software_instance_uuid == '' or software_instance_name is not defined or software_instance_name == ''
+    or system_nickname is not defined or system_nickname == ''
+
 # Create a variable for the software update search response content.
 - name: Initialize the container for the software update search response content when a SWI is specified.
   ansible.builtin.set_fact:

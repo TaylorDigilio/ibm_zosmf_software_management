@@ -94,6 +94,11 @@
     zmf_host: '{{ zmf_host }}:{{ zmf_port }}'
   when: zmf_port is defined and ':' not in zmf_host
 
+- name: "Obtain the system nickname from the host name if necessary"
+  ansible.builtin.set_fact:
+    system_nickname: '{{ zmf_host.split(".").0 }}'
+  when: system_nickname is not defined and zmf_host is defined and '.' in zmf_host
+
 ##########################################################################################
 # URI MODULE #1: Obtain the UUID for a z/OS system.                                      #
 ##########################################################################################
@@ -117,6 +122,12 @@
   delegate_to: localhost
   register: zos_system_uuid_response
 
+# Issue a failure message when the z/OS system does not have a UUID.
+- name: The z/OS system does not have a UUID
+  ansible.builtin.fail:
+    msg: "The z/OS system {{ system_nickname }} does not have a UUID."
+  when: zos_system_uuid_response.status == 200 and not zos_system_uuid_response.json['uuid']
+
 # Save the z/OS system's UUID.
 - name: Write the results for the z/OS system UUID operation to a JSON file
   block:
@@ -130,9 +141,9 @@
     - name: Display z/OS system UUID REST API failure information
       ansible.builtin.fail:
         msg: "There was an error encountered during z/OS system UUID REST API execution. Its possible the host
-        system is missing required APAR PH47050 which contains the software instance report REST APIs. Otherwise the
-        specified software instance was not found. These are the failure
-        details: {{ zos_system_uuid_response.json }}"
+        system is missing required APAR PH49464 which contains the retrieve z/OS system UUID REST API. Otherwise
+        the specified software instance was not found. These are the failure
+        details: {{ zos_system_uuid_response }}"
       when: zos_system_uuid_response.status == 404
 
     # Issue a failure message and stop the playbook.

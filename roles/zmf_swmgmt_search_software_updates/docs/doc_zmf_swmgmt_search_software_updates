@@ -51,7 +51,7 @@ options:
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
-        required: True
+        required: False
         type: str
     system_nickname:
         description:
@@ -61,7 +61,7 @@ options:
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
-        required: True
+        required: False
         type: str
     software_instance_uuid:
         description:
@@ -71,7 +71,7 @@ options:
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
-        required: True
+        required: False
         type: str
     search_software_updates_response_file:
         description:
@@ -123,10 +123,19 @@ notes:
       such as z/OSMF host server, userid, password, software instance name and system,
       and response file name.
     - >
+      Command syntax to call a playbook using an inventory file:
+        ansible-playbook -i inventory software_management_reports_CICDtest1.yml
+      Command syntax to call a playbook using command arguments:
+        ansible-playbook software_management_reports_CICDtest1.yml -e zmf_user=zosmf**
+        -e zmf_password=zosmf**
+    - >
       When the role is executed, a message shown in following example is
       displayed, C("msg": "Output filename= /tmp/xxx/search_software_updates_response.json").
       This message includes a file path and file name where the search software updates report
       for the requested software instance is returned.
+    - >
+      Refer to https://www.ibm.com/docs/en/zos/3.1.0?topic=services-software-update-search
+      for more information on the REST API's request and response JSON.
 
 """
 
