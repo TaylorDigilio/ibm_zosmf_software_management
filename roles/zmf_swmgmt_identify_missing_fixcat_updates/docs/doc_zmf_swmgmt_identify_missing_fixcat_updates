@@ -50,6 +50,10 @@ options:
         description:
             - Name of the software instance.
             - >
+              A software instance name must be specified when a software instance UUID
+              is not specified. If both a software instance name and UUID are
+              specified, then the software instance UUID is used by default.
+            - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
         required: False
@@ -60,6 +64,11 @@ options:
               Nickname of the z/OSMF host system that has access to the volumes and
               data sets where the software instance resides.
             - >
+              A system nickname must be specified when a software instance UUID
+              is not specified. If a software instance UUID is specified in 
+              addition to a software instance & system nickname, then the
+              software instance UUID is used by default.
+            - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
         required: False
@@ -69,6 +78,10 @@ options:
             - >
               A UUID of a software instance. A UUID is assigned to every software instance and 
               can be obtained using the "List the software instances defined to z/OSMF" REST API. 
+            - >
+              A software instance UUID must be specified when a software instance name
+              is not specified. If both a software instance UUID and name are
+              specified, then the software instance UUID is used by default.
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
