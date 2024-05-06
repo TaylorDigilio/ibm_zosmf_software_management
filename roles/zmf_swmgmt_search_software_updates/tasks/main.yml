@@ -9,8 +9,8 @@
   ansible.builtin.fail:
     msg: "Specify a software instance & system nickname or a UUID and retry the role."
   when: >
-    software_instance_uuid is not defined or software_instance_uuid == '' or software_instance_name is not defined or software_instance_name == ''
-    or system_nickname is not defined or system_nickname == ''
+    (software_instance_uuid is not defined or software_instance_uuid == '') and (software_instance_name is not defined or software_instance_name == ''
+    or system_nickname is not defined or system_nickname == '')
 
 # Create a variable for the software update search response content.
 - name: Initialize the container for the software update search response content when a SWI is specified.
