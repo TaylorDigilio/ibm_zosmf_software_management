@@ -9,8 +9,8 @@
   ansible.builtin.fail:
     msg: "Specify a software instance & system nickname, a UUID, or a CSI data set name and retry the role."
   when: >
-    (software_instance_uuid is not defined or software_instance_uuid == '') and (software_instance_name is not defined or software_instance_name == '')
-    and (system_nickname is not defined or system_nickname == '') and (csi_data_set_name is not defined or csi_data_set_name == '')
+    (software_instance_uuid is not defined or software_instance_uuid == '') and (software_instance_name is not defined or software_instance_name == ''
+    or system_nickname is not defined or system_nickname == '') and (csi_data_set_name is not defined or csi_data_set_name == '')
 
 # Issue a failure message and stop the playbook if no zones or entries were specified.
 - name: Display the software update search action failure information if no zones or entries were specified
