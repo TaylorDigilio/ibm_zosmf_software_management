@@ -156,6 +156,12 @@
         details: {{ search_software_updates_swi_response.json }}"
       when: search_software_updates_swi_response.status == 404
 
+    # Issue a failure message when user does not have the appropriate authority.
+    - name: The user does not have the appropriate authority to complete this request
+      ansible.builtin.fail:
+        msg: "Missing Critical Updates failure details: {{ search_software_updates_swi_response.json }} "
+      when: search_software_updates_swi_response.status == 403
+
     # Issue a failure message and stop the playbook.
     - name: Display the software update search action failure information
       ansible.builtin.fail:
@@ -199,6 +205,12 @@
         specified software instance was not found. These are the failure
         details: {{ search_software_updates_uuid_response.json }}"
       when: search_software_updates_uuid_response.status == 404
+
+    # Issue a failure message when user does not have the appropriate authority.
+    - name: The user does not have the appropriate authority to complete this request
+      ansible.builtin.fail:
+        msg: "Missing Critical Updates failure details: {{ search_software_updates_uuid_response.json }} "
+      when: search_software_updates_uuid_response.status == 403
 
     # Issue a failure message and stop the playbook.
     - name: Display the software update search action failure information
