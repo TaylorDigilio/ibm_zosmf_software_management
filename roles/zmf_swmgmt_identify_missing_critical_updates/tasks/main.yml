@@ -129,7 +129,7 @@
           Host: "{{ zmf_host }}"
           Origin: "https://{{ zmf_host }}"
         method: POST
-        status_code: 202, 404
+        status_code: 202, 403, 404
         validate_certs: false
         body_format: json
         body: "{{ missing_critical_updates_request_body }}"
@@ -179,7 +179,7 @@
           Host: "{{ zmf_host }}"
           Origin: "https://{{ zmf_host }}"
         method: POST
-        status_code: 202, 404
+        status_code: 202, 403, 404
         validate_certs: false
         body_format: json
         body: "{{ missing_critical_updates_request_body }}"
@@ -196,7 +196,7 @@
     - name: Display Missing Critical Updates REST API failure information
       ansible.builtin.fail:
         msg: "There was an error encountered during Missing Critical Updates REST API execution. Its possible the host
-        system is missing required APAR PH47050 which contains the software instance report REST APIs. Otherwise the
+        system is missing required APAR PH49464 which contains the software instance report REST APIs. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ missing_critical_updates_uuid_response.json }}"
       when: missing_critical_updates_uuid_response.status == 404

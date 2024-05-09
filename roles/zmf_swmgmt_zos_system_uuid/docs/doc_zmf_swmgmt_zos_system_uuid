@@ -8,7 +8,10 @@ description:
     - >
       The B(IBM z/OSMF collection) provides an Ansible role, referred to as
       B(zmf_swmgmt_zos_system_uuid), to retrieve the z/OS system UUID for the
-      specified system nickname.
+      specified system nickname. The UUID identifies the software instance
+      object that corresponds to the installed software for the specified
+      z/OSMF host system.  The UUID can be used to uniquely identify a
+      software instance object to be acted upon by other Ansible roles.
 author:
     - Taylor Digilio (Taylor.Digilio@ibm.com)
 options:
@@ -49,19 +52,6 @@ options:
         description:
             - >
               Nickname of the z/OSMF host system.
-            - >
-              This variable can be specified in the inventory file or as an argument on
-              the playbook command.
-        required: True
-        type: str
-    zos_system_uuid_response_file:
-        description:
-            - The path to the file that will contain the results from the retrieve z/OS system UUID operation.
-            - >
-              The directory must already exist otherwise there will be an error writing the
-              results to the file. If the file exists in the directory already, it will be
-              overwritten by the new response when the playbook is executed. If the file
-              doesn't exist in the directory, it will be created.
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.
