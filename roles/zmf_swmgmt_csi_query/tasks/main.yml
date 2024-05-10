@@ -518,7 +518,7 @@
     - name: Display CSI Query REST API failure information
       ansible.builtin.fail:
         msg: "There was an error encountered during CSI Query REST API execution. Its possible the host
-        system is missing required APAR PH47050 which contains the software instance report REST APIs. Otherwise the
+        system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_swi_response.json }}"
       when: csi_query_swi_response.status == 404
@@ -568,7 +568,7 @@
     - name: Display CSI Query REST API failure information
       ansible.builtin.fail:
         msg: "There was an error encountered during CSI Query REST API execution. Its possible the host
-        system is missing required APAR PH47050 which contains the CSI Query REST API. Otherwise the
+        system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_uuid_response.json }}"
       when: csi_query_uuid_response.status == 404
