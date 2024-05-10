@@ -76,7 +76,11 @@ options:
         description:
             - >
               A UUID of a software instance. A UUID is assigned to every software instance and 
-              can be obtained using the "List the software instances defined to z/OSMF" REST API. 
+              can be obtained using the "List the software instances defined to z/OSMF" REST API.
+            - >
+              A UUID can also be obtained using the zmf_swmgmt_zos_system_uuid Ansible role which
+              retrieves the UUID for the software instance that represents the installed software
+              for the specified z/OSMF host system.
             - >
               A software instance UUID must be specified when a software instance name
               is not specified. If both a software instance UUID and name are
