@@ -5,9 +5,9 @@
 # Tasks file for zmf_swmgmt_search_software_updates play.
 
 # Do not attempt to execute the play without a software instance or UUID.
-- name: A software instance & system nickname or a UUID must be provided to the role
+- name: A software instance and system nickname or a UUID must be provided to the role
   ansible.builtin.fail:
-    msg: "Specify a software instance & system nickname or a UUID and retry the role."
+    msg: "Specify a software instance and system nickname or a UUID and retry the role."
   when: >
     (software_instance_uuid is not defined or software_instance_uuid == '') and (software_instance_name is not defined or software_instance_name == ''
     or system_nickname is not defined or system_nickname == '')
@@ -150,7 +150,7 @@
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display Software Update Search REST API failure information
       ansible.builtin.fail:
-        msg: "There was an error encountered during Software Update Search REST API execution. Its possible the host
+        msg: "There was an error encountered during Software Update Search REST API execution. It's possible the host
         system is missing required APAR PH47050 which contains the software instance report REST APIs. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ search_software_updates_swi_response.json }}"
@@ -200,7 +200,7 @@
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display Software Update Search REST API failure information
       ansible.builtin.fail:
-        msg: "There was an error encountered during Software Update Search REST API execution. Its possible the host
+        msg: "There was an error encountered during Software Update Search REST API execution. It's possible the host
         system is missing required APAR PH49464 which contains the software instance report REST APIs. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ search_software_updates_uuid_response.json }}"

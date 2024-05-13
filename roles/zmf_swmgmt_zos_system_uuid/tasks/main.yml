@@ -141,7 +141,7 @@
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display z/OS system UUID REST API failure information
       ansible.builtin.fail:
-        msg: "There was an error encountered during z/OS system UUID REST API execution. Its possible the host
+        msg: "There was an error encountered during z/OS system UUID REST API execution. It's possible the host
         system is missing required APAR PH49464 which contains the retrieve z/OS system UUID REST API. Otherwise
         the specified software instance was not found. These are the failure
         details: {{ zos_system_uuid_response }}"
@@ -197,7 +197,7 @@
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display z/OS system UUID REST API failure information
       ansible.builtin.fail:
-        msg: "There was an error encountered during z/OS system UUID REST API execution. Its possible the host
+        msg: "There was an error encountered during z/OS system UUID REST API execution. It's possible the host
         system is missing required APAR PH49464 which contains the retrieve z/OS system UUID REST API. Otherwise
         the specified software instance was not found. These are the failure
         details: {{ zos_system_uuid_hostname_response }}"

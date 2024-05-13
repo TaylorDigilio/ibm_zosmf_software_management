@@ -26,7 +26,7 @@ options:
         description:
             - >
               Port number of the z/OSMF server.
-              If z/OSMF is not using the default port, you need to specify
+              If z/OSMF is not using the default port, you need to specify a
               value for this parameter in the inventory file or as an argument on
               the playbook command.
         required: False
