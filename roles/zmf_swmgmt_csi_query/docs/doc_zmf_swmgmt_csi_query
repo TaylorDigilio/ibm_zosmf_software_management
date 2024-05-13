@@ -23,7 +23,7 @@ options:
         description:
             - >
               Port number of the z/OSMF server.
-              If z/OSMF is not using the default port, you need to specify
+              If z/OSMF is not using the default port, you need to specify a
               value for this parameter in the inventory file or as an argument on
               the playbook command.
         required: False
@@ -51,7 +51,7 @@ options:
             - >
               A software instance name must be specified when a software instance UUID
               or a CSI data set name are not specified. If a software instance UUID is
-              specified in addition to a software instance & system nickname, then the
+              specified in addition to a software instance and system nickname, then the
               software instance UUID is used by default.
             - >
               This variable can be specified in the inventory file or as an argument on
@@ -66,7 +66,7 @@ options:
             - >
               A system nickname name must be specified when a software instance UUID
               or a CSI data set name are not specified. If a software instance UUID is
-              specified in addition to a software instance & system nickname, then the
+              specified in addition to a software instance and system nickname, then the
               software instance UUID is used by default.
             - >
               This variable can be specified in the inventory file or as an argument on

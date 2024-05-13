@@ -5,15 +5,15 @@
 # Tasks file for zmf_swmgmt_csi_query play.
 
 # Do not attempt to execute the play without a software instance, a UUID, or a CSI data set name.
-- name: A software instance & system nickname, a UUID, or a CSI data set name must be provided to the role
+- name: A software instance and system nickname, a UUID, or a CSI data set name must be provided to the role
   ansible.builtin.fail:
-    msg: "Specify a software instance & system nickname, a UUID, or a CSI data set name and retry the role."
+    msg: "Specify a software instance and system nickname, a UUID, or a CSI data set name and retry the role."
   when: >
     (software_instance_uuid is not defined or software_instance_uuid == '') and (software_instance_name is not defined or software_instance_name == ''
     or system_nickname is not defined or system_nickname == '') and (csi_data_set_name is not defined or csi_data_set_name == '')
 
 # Issue a failure message and stop the playbook if no zones or entries were specified.
-- name: Display the software update search action failure information if no zones or entries were specified
+- name: Display the CSI Query action failure information if no zones or entries were specified
   ansible.builtin.fail:
     msg: "One or more zones and one or more entries must be specified for the CSI query.  Specify one or more zones and one or more entries and try again."
   when: zones is not defined or entries is not defined
@@ -517,7 +517,7 @@
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display CSI Query REST API failure information
       ansible.builtin.fail:
-        msg: "There was an error encountered during CSI Query REST API execution. Its possible the host
+        msg: "There was an error encountered during CSI Query REST API execution. It's possible the host
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_swi_response.json }}"
@@ -567,7 +567,7 @@
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display CSI Query REST API failure information
       ansible.builtin.fail:
-        msg: "There was an error encountered during CSI Query REST API execution. Its possible the host
+        msg: "There was an error encountered during CSI Query REST API execution. It's possible the host
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_uuid_response.json }}"
@@ -617,7 +617,7 @@
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display CSI Query REST API failure information
       ansible.builtin.fail:
-        msg: "There was an error encountered during CSI Query REST API execution. Its possible the host
+        msg: "There was an error encountered during CSI Query REST API execution. It's possible the host
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_dataset_response.json }}"
