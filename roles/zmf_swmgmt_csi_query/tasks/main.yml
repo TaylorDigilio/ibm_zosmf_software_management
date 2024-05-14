@@ -226,7 +226,7 @@
       ansible.builtin.fail:
         msg: "There was an error encountered during CSI Query REST API execution. It's possible the host
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
-        specified software instance was not found. These are the failure
+        specified CSI data set was not found. These are the failure
         details: {{ csi_query_dataset_response }}"
       when: csi_query_dataset_response.status == 404
 
