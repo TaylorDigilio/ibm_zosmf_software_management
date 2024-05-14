@@ -36,444 +36,51 @@
     csi_query_dataset_response: ""
   when: csi_data_set_name is defined
 
-# Variations without subentries or filter
-- name: "Including zones, entries, and zosmfuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfuid":"{{ remote_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfuid and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfuid and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfuid, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfuid, zosmfpw, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_password is defined and remote_zmf_user is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfpw":"{{ remote_zmf_password }}",
-  "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfpw and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }},
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    proxy_zmf_user is defined and remote_zmf_user is not defined and remote_zmf_password is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, proxyuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "proxyuid":"{{ proxy_zmf_user }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    proxy_zmf_password is defined and proxy_zmf_user is not defined and remote_zmf_user is not defined
-    and remote_zmf_password is not defined and subentries is not defined and filter is not defined
-
-- name: "Including zones, entries, zosmfuid, zosmfpw, proxyuid, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is not defined
-
-# Variations with subentries
-- name: "Including zones, entries, subentries, and zosmfuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfuid":"{{ remote_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfuid and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfuid and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfuid, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfuid, zosmfpw, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_password is defined and remote_zmf_user is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfpw":"{{ remote_zmf_password }}",
-  "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfpw and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }},
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    proxy_zmf_user is defined and remote_zmf_user is not defined and remote_zmf_password is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, proxyuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "proxyuid":"{{ proxy_zmf_user }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    proxy_zmf_password is defined and proxy_zmf_user is not defined and remote_zmf_user is not defined
-    and remote_zmf_password is not defined and subentries is defined and filter is not defined
-
-- name: "Including zones, entries, subentries, zosmfuid, zosmfpw, proxyuid, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is defined and filter is not defined
-
-# Variations with filter
-- name: "Including zones, entries, filter, and zosmfuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfuid and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfuid and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}",
- "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}",
- "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfuid, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfuid, zosmfpw, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_password is defined and remote_zmf_user is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfpw":"{{ remote_zmf_password }}",
-  "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfpw and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    proxy_zmf_user is defined and remote_zmf_user is not defined and remote_zmf_password is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, proxyuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "proxyuid":"{{ proxy_zmf_user }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    proxy_zmf_password is defined and proxy_zmf_user is not defined and remote_zmf_user is not defined
-    and remote_zmf_password is not defined and subentries is not defined and filter is defined
-
-- name: "Including zones, entries, filter, zosmfuid, zosmfpw, proxyuid, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is not defined and filter is defined
-
-# Variations that include subentries and filter.
-- name: "Including zones, entries, subentries, filter, and zosmfuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }},
-  "filter": "{{ filter }}", "zosmfuid":"{{ remote_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, zosmfuid and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfuid":"{{ remote_zmf_user }}", "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, zosmfuid and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfuid":"{{ remote_zmf_user }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, zosmfuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfuid":"{{ remote_zmf_user }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, zosmfuid, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfuid":"{{ remote_zmf_user }}", "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, zosmfuid, zosmfpw, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfuid":"{{ remote_zmf_user }}", "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: >
-    remote_zmf_password is defined and remote_zmf_user is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, zosmfpw and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: >
-    proxy_zmf_user is defined and remote_zmf_user is not defined and remote_zmf_password is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, proxyuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "proxyuid":"{{ proxy_zmf_user }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is defined and filter is defined
-
-- name: "Including zones, entries, subentries, filter, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    proxy_zmf_password is defined and proxy_zmf_user is not defined and remote_zmf_user is not defined
-    and remote_zmf_password is not defined and subentries is defined and filter is defined
-
-# Variations that don't include remote/proxy userid/password.
+# Add zones and entries to JSON request body.
 - name: "Including zones and entries in the request content body"
   ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is not defined
+    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}'
 
-- name: "Including zones, entries, and subentries in the request content body"
+# Add subentries to the JSON request body if specified.
+- name: "Adding subentries in the request content body"
   ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is not defined
+    csi_query_request_body: '{{ csi_query_request_body }},"subentries": {{ subentries }}'
+  when: subentries is defined
 
-- name: "Including zones, entries, and filter in the request content body"
+# Add filter to the JSON request body if specified.
+- name: "Adding filter in the request content body"
   ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "filter": "{{ filter }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is not defined and filter is defined
+    csi_query_request_body: '{{ csi_query_request_body }},"filter": "{{ filter }}"'
+  when: filter is defined
 
-- name: "Including zones, entries, subentries, and filter in the request content body"
+# Add zosmfuid to the JSON request body if specified.
+- name: "Adding zosmfuid in the request content body"
   ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}"}'
-  when: >
-    remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is not defined
-    and proxy_zmf_password is not defined and subentries is defined and filter is defined
+    csi_query_request_body: '{{ csi_query_request_body }},"zosmfuid": "{{ remote_zmf_user }}"'
+  when: remote_zmf_user is defined
 
-# All possible request content variables specified.
-- name: "Including zones, entries, subentries, filter, zosmfuid, zosmfpw, proxyuid, and proxypw in the request content body"
+# Add zosmfpw to the JSON request body if specified.
+- name: "Adding zosmfpw in the request content body"
   ansible.builtin.set_fact:
-    csi_query_request_body: '{"zones": {{ zones }}, "entries": {{ entries }}, "subentries": {{ subentries }}, "filter": "{{ filter }}",
-  "zosmfuid":"{{ remote_zmf_user }}", "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: >
-    remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined
-    and proxy_zmf_password is defined and subentries is defined and filter is defined
+    csi_query_request_body: '{{ csi_query_request_body }},"zosmfpw": "{{ remote_zmf_password }}"'
+  when: remote_zmf_password is defined
+
+# Add proxyuid to the JSON request body if specified.
+- name: "Adding proxyuid in the request content body"
+  ansible.builtin.set_fact:
+    csi_query_request_body: '{{ csi_query_request_body }},"proxyuid": "{{ proxy_zmf_user }}"'
+  when: proxy_zmf_user is defined
+
+# Add proxypw to the JSON request body if specified.
+- name: "Adding proxypw in the request content body"
+  ansible.builtin.set_fact:
+    csi_query_request_body: '{{ csi_query_request_body }},"proxypw": "{{ proxy_zmf_password }}"'
+  when: proxy_zmf_password is defined
+
+# Add the ending curly brace around the request content JSON.
+- name: "Adding ending curly brace for the JSON request content body"
+  ansible.builtin.set_fact:
+    csi_query_request_body: '{{ csi_query_request_body }}}'
 
 # Ensure there is a semicolon in the host.
 - name: "Set the zmf_port if specified"
