@@ -127,14 +127,14 @@
         msg: "There was an error encountered during CSI Query REST API execution. It's possible the host
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
-        details: {{ csi_query_swi_response.json }}"
+        details: {{ csi_query_swi_response }}"
       when: csi_query_swi_response.status == 404
 
     # Issue a failure message when user does not have the appropriate authority.
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "CSI Query failure details: {{ csi_query_swi_response.json }} "
-      when: csi_query_swi_response.status == 403
+      when: csi_query_swi_response.status == 403 and csi_query_swi_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the csi query action failure information
@@ -177,14 +177,14 @@
         msg: "There was an error encountered during CSI Query REST API execution. It's possible the host
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
-        details: {{ csi_query_uuid_response.json }}"
+        details: {{ csi_query_uuid_response }}"
       when: csi_query_uuid_response.status == 404
 
     # Issue a failure message when user does not have the appropriate authority.
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "CSI Query failure details: {{ csi_query_uuid_response.json }} "
-      when: csi_query_uuid_response.status == 403
+      when: csi_query_uuid_response.status == 403 and csi_query_uuid_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the csi query action failure information
@@ -227,14 +227,14 @@
         msg: "There was an error encountered during CSI Query REST API execution. It's possible the host
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
-        details: {{ csi_query_dataset_response.json }}"
+        details: {{ csi_query_dataset_response }}"
       when: csi_query_dataset_response.status == 404
 
     # Issue a failure message when user does not have the appropriate authority.
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "CSI Query failure details: {{ csi_query_dataset_response.json }} "
-      when: csi_query_dataset_response.status == 403
+      when: csi_query_dataset_response.status == 403 and csi_query_dataset_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the csi query action failure information
