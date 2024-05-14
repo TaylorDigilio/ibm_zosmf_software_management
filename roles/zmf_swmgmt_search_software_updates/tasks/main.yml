@@ -108,14 +108,14 @@
         msg: "There was an error encountered during Software Update Search REST API execution. It's possible the host
         system is missing required APAR PH47050 which contains the software instance report REST APIs. Otherwise the
         specified software instance was not found. These are the failure
-        details: {{ search_software_updates_swi_response.json }}"
+        details: {{ search_software_updates_swi_response }}"
       when: search_software_updates_swi_response.status == 404
 
     # Issue a failure message when user does not have the appropriate authority.
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "Missing Critical Updates failure details: {{ search_software_updates_swi_response.json }} "
-      when: search_software_updates_swi_response.status == 403
+      when: search_software_updates_swi_response.status == 403 and search_software_updates_swi_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the software update search action failure information
@@ -158,14 +158,14 @@
         msg: "There was an error encountered during Software Update Search REST API execution. It's possible the host
         system is missing required APAR PH49464 which contains the software instance report REST APIs. Otherwise the
         specified software instance was not found. These are the failure
-        details: {{ search_software_updates_uuid_response.json }}"
+        details: {{ search_software_updates_uuid_response }}"
       when: search_software_updates_uuid_response.status == 404
 
     # Issue a failure message when user does not have the appropriate authority.
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "Missing Critical Updates failure details: {{ search_software_updates_uuid_response.json }} "
-      when: search_software_updates_uuid_response.status == 403
+      when: search_software_updates_uuid_response.status == 403 and search_software_updates_uuid_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the software update search action failure information

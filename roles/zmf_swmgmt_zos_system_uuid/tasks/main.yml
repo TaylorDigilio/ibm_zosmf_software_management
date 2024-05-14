@@ -14,6 +14,11 @@
   ansible.builtin.set_fact:
     zos_system_uuid_hostname_response: ""
 
+# Set comma variable to empty string to use for first variable added to request content.
+- name: "Create comma variable"
+  ansible.builtin.set_fact:
+    comma: ''
+
 # Add the opening curly brace around the request content JSON.
 - name: "Adding opening curly brace for the JSON request content body"
   ansible.builtin.set_fact:
@@ -22,25 +27,28 @@
 # Add zosmfuid to the JSON request body if specified.
 - name: "Adding zosmfuid in the request content body"
   ansible.builtin.set_fact:
-    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }},"zosmfuid": "{{ remote_zmf_user }}"'
+    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }}{{ comma }}"zosmfuid": "{{ remote_zmf_user }}"'
+    comma: ','
   when: remote_zmf_user is defined
 
 # Add zosmfpw to the JSON request body if specified.
 - name: "Adding zosmfpw in the request content body"
   ansible.builtin.set_fact:
-    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }},"zosmfpw": "{{ remote_zmf_password }}"'
+    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }}{{ comma }}"zosmfpw": "{{ remote_zmf_password }}"'
+    comma: ','
   when: remote_zmf_password is defined
 
 # Add proxyuid to the JSON request body if specified.
 - name: "Adding proxyuid in the request content body"
   ansible.builtin.set_fact:
-    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }},"proxyuid": "{{ proxy_zmf_user }}"'
+    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }}{{ comma }}"proxyuid": "{{ proxy_zmf_user }}"'
+    comma: ','
   when: proxy_zmf_user is defined
 
 # Add proxypw to the JSON request body if specified.
 - name: "Adding proxypw in the request content body"
   ansible.builtin.set_fact:
-    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }},"proxypw": "{{ proxy_zmf_password }}"'
+    zos_system_uuid_request_body: '{{ zos_system_uuid_request_body }}{{ comma }}"proxypw": "{{ proxy_zmf_password }}"'
   when: proxy_zmf_password is defined
 
 # Add the ending curly brace around the request content JSON.
@@ -105,7 +113,7 @@
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "Missing Critical Updates failure details: {{ zos_system_uuid_response.json }} "
-      when: zos_system_uuid_response.status == 403
+      when: zos_system_uuid_response.status == 403 and zos_system_uuid_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the z/OS system UUID action failure information
@@ -136,10 +144,10 @@
       delegate_to: localhost
       register: zos_system_uuid_hostname_response
 
-    # Issue a failure message when the z/OS system does not have a UUID.
-    - name: The z/OS system does not have a UUID
+    # Issue a failure message when the z/OS host system does not have a UUID.
+    - name: The z/OS host system does not have a UUID
       ansible.builtin.fail:
-        msg: "The z/OS system {{ system_nickname }} does not have a UUID."
+        msg: "The z/OS system with host name {{ zmf_host }} does not have a UUID."
       when: zos_system_uuid_hostname_response.status == 200 and not zos_system_uuid_hostname_response.json['uuid']
 
     # Create a variable for the z/OS system UUID.
@@ -161,7 +169,7 @@
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "Missing Critical Updates failure details: {{ zos_system_uuid_hostname_response.json }} "
-      when: zos_system_uuid_hostname_response.status == 403
+      when: zos_system_uuid_hostname_response.status == 403 and zos_system_uuid_hostname_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the z/OS system UUID action failure information

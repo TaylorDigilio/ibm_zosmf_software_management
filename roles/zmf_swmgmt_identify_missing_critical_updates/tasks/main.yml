@@ -24,6 +24,11 @@
     missing_critical_updates_uuid_response: ""
   when: software_instance_uuid is defined
 
+# Set comma variable to empty string to use for first variable added to request content.
+- name: "Create comma variable"
+  ansible.builtin.set_fact:
+    comma: ''
+
 # Add the opening curly brace around the request content JSON.
 - name: "Adding opening curly brace for the JSON request content body"
   ansible.builtin.set_fact:
@@ -32,25 +37,28 @@
 # Add zosmfuid to the JSON request body if specified.
 - name: "Adding zosmfuid in the request content body"
   ansible.builtin.set_fact:
-    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }},"zosmfuid": "{{ remote_zmf_user }}"'
+    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }}{{ comma }}"zosmfuid": "{{ remote_zmf_user }}"'
+    comma: ','
   when: remote_zmf_user is defined
 
 # Add zosmfpw to the JSON request body if specified.
 - name: "Adding zosmfpw in the request content body"
   ansible.builtin.set_fact:
-    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }},"zosmfpw": "{{ remote_zmf_password }}"'
+    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }}{{ comma }}"zosmfpw": "{{ remote_zmf_password }}"'
+    comma: ','
   when: remote_zmf_password is defined
 
 # Add proxyuid to the JSON request body if specified.
 - name: "Adding proxyuid in the request content body"
   ansible.builtin.set_fact:
-    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }},"proxyuid": "{{ proxy_zmf_user }}"'
+    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }}{{ comma }}"proxyuid": "{{ proxy_zmf_user }}"'
+    comma: ','
   when: proxy_zmf_user is defined
 
 # Add proxypw to the JSON request body if specified.
 - name: "Adding proxypw in the request content body"
   ansible.builtin.set_fact:
-    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }},"proxypw": "{{ proxy_zmf_password }}"'
+    missing_critical_updates_request_body: '{{ missing_critical_updates_request_body }}{{ comma }}"proxypw": "{{ proxy_zmf_password }}"'
   when: proxy_zmf_password is defined
 
 # Add the ending curly brace around the request content JSON.
@@ -102,14 +110,14 @@
         msg: "There was an error encountered during Missing Critical Updates REST API execution. It's possible the host
         system is missing required APAR PH47050 which contains the software instance report REST APIs. Otherwise the
         specified software instance was not found. These are the failure
-        details: {{ missing_critical_updates_swi_response.json }}"
+        details: {{ missing_critical_updates_swi_response }}"
       when: missing_critical_updates_swi_response.status == 404
 
     # Issue a failure message when user does not have the appropriate authority.
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "Missing Critical Updates failure details: {{ missing_critical_updates_swi_response.json }} "
-      when: missing_critical_updates_swi_response.status == 403
+      when: missing_critical_updates_swi_response.status == 403 and missing_critical_updates_swi_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the missing critical updates action failure information
@@ -152,14 +160,14 @@
         msg: "There was an error encountered during Missing Critical Updates REST API execution. It's possible the host
         system is missing required APAR PH49464 which contains the software instance report REST APIs. Otherwise the
         specified software instance was not found. These are the failure
-        details: {{ missing_critical_updates_uuid_response.json }}"
+        details: {{ missing_critical_updates_uuid_response }}"
       when: missing_critical_updates_uuid_response.status == 404
 
     # Issue a failure message when user does not have the appropriate authority.
     - name: The user does not have the appropriate authority to complete this request
       ansible.builtin.fail:
         msg: "Missing Critical Updates failure details: {{ missing_critical_updates_uuid_response.json }} "
-      when: missing_critical_updates_uuid_response.status == 403
+      when: missing_critical_updates_uuid_response.status == 403 and missing_critical_updates_uuid_response.json is defined
 
     # Issue a failure message and stop the playbook.
     - name: Display the missing critical updates action failure information
