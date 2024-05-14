@@ -24,85 +24,39 @@
     missing_fixcat_updates_uuid_response: ""
   when: software_instance_uuid is defined
 
-# Set the request content body as an empty dictionary.
-- name: "No request content specified for missing fixcat updates operation, using empty request content body"
+# Add the opening curly brace around the request content JSON.
+- name: "Adding opening curly brace for the JSON request content body"
   ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{}'
-  when: remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
+    missing_fixcat_updates_request_body: '{'
 
-- name: "Including zosmfuid in the request content body"
+# Add zosmfuid to the JSON request body if specified.
+- name: "Adding zosmfuid in the request content body"
   ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfuid":"{{ remote_zmf_user }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
+    missing_fixcat_updates_request_body: '{{ missing_fixcat_updates_request_body }},"zosmfuid": "{{ remote_zmf_user }}"'
+  when: remote_zmf_user is defined
 
-- name: "Including zosmfuid and zosmfpw in the request content body"
+# Add zosmfpw to the JSON request body if specified.
+- name: "Adding zosmfpw in the request content body"
   ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
+    missing_fixcat_updates_request_body: '{{ missing_fixcat_updates_request_body }},"zosmfpw": "{{ remote_zmf_password }}"'
+  when: remote_zmf_password is defined
 
-- name: "Including zosmfuid and proxyuid in the request content body"
+# Add proxyuid to the JSON request body if specified.
+- name: "Adding proxyuid in the request content body"
   ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfuid":"{{ remote_zmf_user }}",
- "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is defined and proxy_zmf_password is not defined
+    missing_fixcat_updates_request_body: '{{ missing_fixcat_updates_request_body }},"proxyuid": "{{ proxy_zmf_user }}"'
+  when: proxy_zmf_user is defined
 
-- name: "Including zosmfuid and proxypw in the request content body"
+# Add proxypw to the JSON request body if specified.
+- name: "Adding proxypw in the request content body"
   ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfuid":"{{ remote_zmf_user }}",
- "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined and proxy_zmf_password is defined
+    missing_fixcat_updates_request_body: '{{ missing_fixcat_updates_request_body }},"proxypw": "{{ proxy_zmf_password }}"'
+  when: proxy_zmf_password is defined
 
-- name: "Including zosmfuid, zosmfpw, and proxyuid in the request content body"
+# Add the ending curly brace around the request content JSON.
+- name: "Adding ending curly brace for the JSON request content body"
   ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined and proxy_zmf_password is not defined
-
-- name: "Including zosmfuid, zosmfpw, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined and proxy_zmf_password is defined
-
-- name: "Including zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfpw":"{{ remote_zmf_password }}"}'
-  when: remote_zmf_password is defined and remote_zmf_user is not defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
-
-- name: "Including zosmfpw and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfpw":"{{ remote_zmf_password }}",
-  "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is defined and proxy_zmf_password is not defined
-
-- name: "Including zosmfpw and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfpw":"{{ remote_zmf_password }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is not defined and proxy_zmf_password is defined
-
-- name: "Including proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"proxyuid":"{{ proxy_zmf_user }}"}'
-  when: proxy_zmf_user is defined and remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_password is not defined
-
-- name: "Including proxyuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"proxyuid":"{{ proxy_zmf_user }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is defined and proxy_zmf_password is defined
-
-- name: "Including proxypw in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"proxypw":"{{ proxy_zmf_password }}"}'
-  when: proxy_zmf_password is defined and proxy_zmf_user is not defined and remote_zmf_user is not defined and remote_zmf_password is not defined
-
-- name: "Including zosmfuid, zosmfpw, proxyuid, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    missing_fixcat_updates_request_body: '{"zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined and proxy_zmf_password is defined
+    missing_fixcat_updates_request_body: '{{ missing_fixcat_updates_request_body }}}'
 
 - name: "Set the zmf_port if specified"
   ansible.builtin.set_fact:

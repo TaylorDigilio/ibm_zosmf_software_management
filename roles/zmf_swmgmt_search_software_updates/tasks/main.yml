@@ -30,84 +30,39 @@
     msg: "One or more software updates must be specified for the search.  Specify one or more updates and try again."
   when: updates is not defined
 
-- name: "Including updates and zosmfuid in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfuid":"{{ remote_zmf_user }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
-
-- name: "Including updates, zosmfuid and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
-
-- name: "Including updates, zosmfuid and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfuid":"{{ remote_zmf_user }}",
- "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is defined and proxy_zmf_password is not defined
-
-- name: "Including updates, zosmfuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfuid":"{{ remote_zmf_user }}",
- "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is not defined and proxy_zmf_user is not defined and proxy_zmf_password is defined
-
-- name: "Including updates, zosmfuid, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined and proxy_zmf_password is not defined
-
-- name: "Including updates, zosmfuid, zosmfpw, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is not defined and proxy_zmf_password is defined
-
-- name: "Including updates and zosmfpw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfpw":"{{ remote_zmf_password }}"}'
-  when: remote_zmf_password is defined and remote_zmf_user is not defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
-
-- name: "Including updates, zosmfpw, and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfpw":"{{ remote_zmf_password }}",
-  "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is defined and proxy_zmf_password is not defined
-
-- name: "Including updates, zosmfpw and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }},
- "zosmfpw":"{{ remote_zmf_password }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is not defined and remote_zmf_password is defined and proxy_zmf_user is not defined and proxy_zmf_password is defined
-
-- name: "Including updates and proxyuid in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "proxyuid":"{{ proxy_zmf_user }}"}'
-  when: proxy_zmf_user is defined and remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_password is not defined
-
-- name: "Including updates, proxyuid and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "proxyuid":"{{ proxy_zmf_user }}",
-  "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is defined and proxy_zmf_password is defined
-
-- name: "Including updates and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "proxypw":"{{ proxy_zmf_password }}"}'
-  when: proxy_zmf_password is defined and proxy_zmf_user is not defined and remote_zmf_user is not defined and remote_zmf_password is not defined
-
-- name: "Including updates, zosmfuid, zosmfpw, proxyuid, and proxypw in the request content body"
-  ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}, "zosmfuid":"{{ remote_zmf_user }}",
- "zosmfpw":"{{ remote_zmf_password }}", "proxyuid":"{{ proxy_zmf_user }}", "proxypw":"{{ proxy_zmf_password }}"}'
-  when: remote_zmf_user is defined and remote_zmf_password is defined and proxy_zmf_user is defined and proxy_zmf_password is defined
-
+# Add updates to JSON request body.
 - name: "Including updates in the request content body"
   ansible.builtin.set_fact:
-    software_update_search_request_body: '{"updates": {{ updates }}}'
-  when: remote_zmf_user is not defined and remote_zmf_password is not defined and proxy_zmf_user is not defined and proxy_zmf_password is not defined
+    software_update_search_request_body: '{"updates": {{ updates }}'
+
+# Add zosmfuid to the JSON request body if specified.
+- name: "Adding zosmfuid in the request content body"
+  ansible.builtin.set_fact:
+    software_update_search_request_body: '{{ software_update_search_request_body }},"zosmfuid": "{{ remote_zmf_user }}"'
+  when: remote_zmf_user is defined
+
+# Add zosmfpw to the JSON request body if specified.
+- name: "Adding zosmfpw in the request content body"
+  ansible.builtin.set_fact:
+    software_update_search_request_body: '{{ software_update_search_request_body }},"zosmfpw": "{{ remote_zmf_password }}"'
+  when: remote_zmf_password is defined
+
+# Add proxyuid to the JSON request body if specified.
+- name: "Adding proxyuid in the request content body"
+  ansible.builtin.set_fact:
+    csoftware_update_search_request_body: '{{ software_update_search_request_body }},"proxyuid": "{{ proxy_zmf_user }}"'
+  when: proxy_zmf_user is defined
+
+# Add proxypw to the JSON request body if specified.
+- name: "Adding proxypw in the request content body"
+  ansible.builtin.set_fact:
+    software_update_search_request_body: '{{ software_update_search_request_body }},"proxypw": "{{ proxy_zmf_password }}"'
+  when: proxy_zmf_password is defined
+
+# Add the ending curly brace around the request content JSON.
+- name: "Adding ending curly brace for the JSON request content body"
+  ansible.builtin.set_fact:
+    software_update_search_request_body: '{{ software_update_search_request_body }}}'
 
 - name: "Set the zmf_port if specified"
   ansible.builtin.set_fact:
