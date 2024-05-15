@@ -128,7 +128,7 @@
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_swi_response.json }}"
-      when: csi_query_swi_response.status == 404 when csi_query_swi_response.json is defined
+      when: csi_query_swi_response.status == 404 and csi_query_swi_response.json is defined
 
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display CSI Query REST API failure information
@@ -193,7 +193,7 @@
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_uuid_response.json }}"
-      when: csi_query_uuid_response.status == 404 when csi_query_uuid_response.json is defined
+      when: csi_query_uuid_response.status == 404 and csi_query_uuid_response.json is defined
 
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display CSI Query REST API failure information
@@ -258,7 +258,7 @@
         system is missing required APAR PH58221 which contains the CSI Query REST API. Otherwise the
         specified software instance was not found. These are the failure
         details: {{ csi_query_dataset_response.json }}"
-      when: csi_query_dataset_response.status == 404 when csi_query_dataset_response.json is defined
+      when: csi_query_dataset_response.status == 404 and csi_query_dataset_response.json is defined
 
     # Issue a failure message when user does not have the APAR with the report APIs installed on their system.
     - name: Display CSI Query REST API failure information
