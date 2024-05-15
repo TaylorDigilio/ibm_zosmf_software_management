@@ -82,7 +82,7 @@
   ansible.builtin.set_fact:
     csi_query_request_body: '{{ csi_query_request_body }}}'
 
-# Ensure there is a semicolon in the host.
+# Ensure there is a colon in the host. Add the z/OSMF server port if specified.
 - name: "Set the zmf_port if specified"
   ansible.builtin.set_fact:
     zmf_host: '{{ zmf_host }}:{{ zmf_port }}'
