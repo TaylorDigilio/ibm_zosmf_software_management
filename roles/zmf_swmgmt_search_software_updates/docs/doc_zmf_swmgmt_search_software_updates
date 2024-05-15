@@ -31,7 +31,7 @@ options:
         default: 443
     zmf_user:
         description:
-            - User name to be used for authenticating with the z/OSMF server.
+            - User ID for authenticating with the z/OSMF server.
             - >
               This variable can be specified in the inventory file or as an argument on
               the playbook command.

@@ -66,6 +66,7 @@
   ansible.builtin.set_fact:
     missing_fixcat_updates_request_body: '{{ missing_fixcat_updates_request_body }}}'
 
+# Ensure there is a colon in the host. Add the z/OSMF server port if specified.
 - name: "Set the zmf_port if specified"
   ansible.builtin.set_fact:
     zmf_host: '{{ zmf_host }}:{{ zmf_port }}'

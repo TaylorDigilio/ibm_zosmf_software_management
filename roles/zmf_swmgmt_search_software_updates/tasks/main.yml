@@ -50,7 +50,7 @@
 # Add proxyuid to the JSON request body if specified.
 - name: "Adding proxyuid in the request content body"
   ansible.builtin.set_fact:
-    csoftware_update_search_request_body: '{{ software_update_search_request_body }},"proxyuid": "{{ proxy_zmf_user }}"'
+    software_update_search_request_body: '{{ software_update_search_request_body }},"proxyuid": "{{ proxy_zmf_user }}"'
   when: proxy_zmf_user is defined
 
 # Add proxypw to the JSON request body if specified.
@@ -64,6 +64,7 @@
   ansible.builtin.set_fact:
     software_update_search_request_body: '{{ software_update_search_request_body }}}'
 
+# Ensure there is a colon in the host. Add the z/OSMF server port if specified.
 - name: "Set the zmf_port if specified"
   ansible.builtin.set_fact:
     zmf_host: '{{ zmf_host }}:{{ zmf_port }}'
